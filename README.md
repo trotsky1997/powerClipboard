@@ -10,3 +10,8 @@ git clone https://github.com/trotsky1997/powerClipboard.git
 cd powerClipboard
 python app.py
 ```
+
+网盘镜像:
+
+链接：https://pan.baidu.com/s/1YECtZnvEYWqecH-EZ6QpRA 
+提取码：yw3n
