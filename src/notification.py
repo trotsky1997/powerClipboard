@@ -4,11 +4,11 @@ from win32gui import *
 import win32con
 import sys
 import os
-import struct
 import time
 
 
 class WindowsBalloonTip:
+
     def __init__(self, title, msg):
         # title, msg = msg, title
         message_map = {

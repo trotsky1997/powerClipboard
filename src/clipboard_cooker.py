@@ -4,7 +4,6 @@ from win32con import *
 import win32clipboard
 from ctypes.wintypes import *
 import os
-import pyperclip
 
 
 def cook_clipboard_pic(vistor):

@@ -1,4 +1,5 @@
 from infi.systray import SysTrayIcon
+from src.go import go
 
 
 def trayer(ops, mode, n):
@@ -45,7 +46,7 @@ def trayer(ops, mode, n):
 
             print(mode[0], mode[1])
 
-        return calling
+        return lambda sysTrayIcon: go(calling, args=(sysTrayIcon,))
     menu = ()
     trans = ()
     for i, ix in enumerate(ops):

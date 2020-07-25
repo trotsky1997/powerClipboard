@@ -4,7 +4,9 @@ from src.trayer import trayer
 from multiprocessing import Process, freeze_support, Array, Pipe
 from src.trans.MTvendor import vendors as mtVendors
 from time import sleep as sleep
-import win32clipboard
+from src.go import go
+
+
 ocr = 'OCR'
 latex = "LaTeX"
 ocrs = [ocr, latex]
@@ -25,16 +27,19 @@ if __name__ == '__main__':
     tray = trayer(ops, mode, n2)
     # observer = Process(target=clipboard_observer, args=(c1l, mode))
     clipper.start()
-    nowNotice = None
-    while True:
-        if mode[1] == 1:
-            clipper.kill()
-            tray.shutdown()
+
+    def sub():
+        nowNotice = None
+        while True:
+            if mode[1] == 1:
+                clipper.kill()
+                tray.shutdown()
+                if nowNotice != None:
+                    nowNotice.kill()
+                break
+            title, msg = n1.recv()
             if nowNotice != None:
                 nowNotice.kill()
-            break
-        title, msg = n1.recv()
-        if nowNotice != None:
-            nowNotice.kill()
-        nowNotice = Process(target=WindowsBalloonTip,
-                            args=(msg, title)).start()
+            nowNotice = Process(target=WindowsBalloonTip,
+                                args=(msg, title)).start()
+    go(sub)
