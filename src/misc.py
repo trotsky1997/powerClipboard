@@ -4,9 +4,10 @@ from src.trans.MTvendor import vendors as mtVendors
 from src.pic2text import pic2text
 from src.pic2latex import pic2latex
 from src.trans.MTvendor import mt
-import PySimpleGUIWx as sg
 import time
-from PIL import ImageGrab
+from src.trayer import trayer
+# from plyer import notification
+
 
 # from clipboard_cooker import cook_clipboard_pic
 
@@ -19,50 +20,29 @@ def vendor2engine(vendor):
     return trs
 
 
-# def clipboard_observer(c1=None, mode=None):  # c1l
-#     history = [None, None]
-#     while True:
-#         time.sleep(0.3)
-#         if mode[1] == -1:
-#             continue
-#         if mode[1] == 1:
-#             c1.send("DIE!")
-#             break
-#         now = pyperclip.paste()
-#         c1.send(now)
+def clipper(mode, n):  # c1r
+    # try:
 
+    def noti(a="0", title='Now Runnng at', tail=" mode"):
+        n.send((title,
+                a+tail,))
 
-def trayer(ops, mode, menu_def):
-    ops_dict = {ix: i for i, ix in enumerate(ops)}
-    tray = sg.SystemTray(menu=menu_def)
-    tray.show_message("Notice", "Initiated Successfully!")
-    old = "-1"
-    while True:
-        menu_item = tray.Read()
-        if menu_item in ['__MESSAGE_CLICKED__', '__DOUBLE_CLICKED__']:
-            continue
-        if menu_item != old:
-            if menu_item != "Mute":
-                mode[1] = 0
-            tray.show_message("Mode running at", menu_item)
-            old = menu_item
-        if menu_item == "Exit":
-            mode[1] = 1
-            break
-        if menu_item == "Mute":
-            mode[1] = -1
-            continue
-        if mode[1] == 0:
-            mode[0] = ops_dict[menu_item]
-            print(menu_item)
-
-
-def clipper(mode,):  # c1r
-
-    action = tuple([pic2text, pic2latex]+[vendor2engine(i) for i in mtVendors])
+    action = tuple([pic2text, pic2latex]+[vendor2engine(i)
+                                          for i in mtVendors])
     old = pyperclip.paste()
+    try:
+        pyperclip.copy("test")
+        val = pyperclip.paste()
+        ans = action[2](val)
+        pyperclip.copy(ans)
+        print(ans)
+        noti("Initlized Successfully!", title="Info", tail="")
+        pyperclip.copy(old)
+    except:
+        pyperclip.copy(old)
+        noti("Initlization Failed!", title="Info", tail="")
+    # dev = 1
     while True:
-        time.sleep(0.4)
         if mode[1] == -1:
             old = pyperclip.paste()
         if mode[1] == 1:
@@ -71,6 +51,25 @@ def clipper(mode,):  # c1r
             val = pyperclip.paste()
             if old == val:
                 continue
-            ans = action[mode[0]](val)
+            if mode[2] == 0:
+                if not(val != "pic" and mode[0] < 2):
+                    ans = action[mode[0]](val)
+                else:
+                    ans = action[2](val)
+            elif mode[2] == 1:
+                if val == "pic":
+                    dans = action[0](val)
+                else:
+                    dans = val
+                if mode[0] < 2:
+                    eng = 2
+                else:
+                    eng = mode[0]
+                ans = action[eng](dans)
             pyperclip.copy(ans)
+            print(ans)
             old = pyperclip.paste()
+            if old == "pic":
+                old = time.time()
+# except:
+    #     pass

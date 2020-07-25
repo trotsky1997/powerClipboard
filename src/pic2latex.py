@@ -13,7 +13,7 @@ def pic2latex(*args, **kwargs):
 
 def uriGen(pri):
     import base64
-    ans = "data:image/png;base64," + base64.b64encode(pri).decode()
+    ans = "data:image/bmp;base64," + base64.b64encode(pri).decode()
     return ans
 
 

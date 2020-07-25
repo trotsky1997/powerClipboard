@@ -1,11 +1,12 @@
 
 import translators as ts
 from src.trans.iciba import iciba
-from src.trans.BaiduTranslate import baidu, baidudeep
+from src.trans.BaiduTranslate import baidu
 from src.trans.sogou import translate as sogou
 from src.trans.xiaoniu import xiaoniuTrans
+import time
 
-vendors = ["google", "tencent", "alibaba",
+vendors = ["google", "tencent", "alibaba", "deepl",
            "youdao", "baidu", "bing", "iciba", "sougou", "xiaoniu", "baidu2"]  # "deepl",
 # vendors = ["raw","deepl","sougou"]
 engines = {
@@ -14,11 +15,11 @@ engines = {
     "alibaba": ts.alibaba,
     "deepl": ts.deepl,
     "youdao": ts.youdao,
-    "baidu": baidu,
+    "baidu": ts.baidu,
     "bing": ts.bing,
     "iciba": iciba,
     "sougou": sogou,
-    "baidu2": baidudeep,
+    "baidu2": baidu,
     "xiaoniu": xiaoniuTrans,
 }
 
@@ -29,6 +30,11 @@ def mt(val="", vendor="google", from_language='en', to_language='zh'):
         result = engine(val, from_language=from_language,
                         to_language=to_language)
     except:
-        result = 'Failed.'
+        try:
+            sub = vendors[int(time.time()) % len(vendors)]
+            result = engines[sub](val, from_language=from_language,
+                                  to_language=to_language)
+        except:
+            result = 'Failed.'
     # print(result)
     return result
