@@ -1,4 +1,5 @@
 import threading
+import time
 
 
 class gos(threading.Thread):
@@ -17,5 +18,21 @@ class gos(threading.Thread):
 
 
 def go(func, args=()):
-    gos(func, args).run()
-    return gos
+    g = gos(func, args)
+    g.run()
+    return g
+
+
+def goretry(func, args=(), max_times=6):
+    def work():
+        n = 0
+        while True:
+            try:
+                go(func, args)
+                break
+            except:
+                n += 1
+                time.sleep(0.1 * n)
+                if n >= max_times:
+                    break
+    go(work)

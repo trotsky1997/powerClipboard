@@ -6,8 +6,10 @@ def trayer(ops, mode, n):
     # try:
 
     def notify(a="0", title='Now Runnng at', tail=" mode"):
-        n.send((title,
-                a+tail))
+        def work():
+            n.send((title,
+                    a+tail))
+        go(work)
 
     def noti(a):
         if mode[3] == 0:
@@ -36,15 +38,19 @@ def trayer(ops, mode, n):
                     noti("OCR&Translate")
                     mode[2] = 1
             elif a == len(ops) + 1:
-                mode[1] = -1
-                noti("Listening Paused")
+                if mode[1] != -1:
+                    mode[1] = -1
+                    noti("Listening Paused")
+                else:
+                    mode[1] = 0
+                    noti("Listening Recoverd")
             elif a == len(ops) + 2:
                 mode[3] = (mode[3] + 1) % 2
             elif a == -1:
                 mode[1] = 1
                 n.send(("Info", "Exiting"))
 
-            print(mode[0], mode[1])
+            #print(mode[0], mode[1], mode[2], mode[3])
 
         return lambda sysTrayIcon: go(calling, args=(sysTrayIcon,))
     menu = ()

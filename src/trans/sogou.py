@@ -43,7 +43,7 @@ def main():
     args = vars(parser.parse_args())
 
     if args['version']:
-        # print(__version__)
+        # #print(__version__)
         return
 
     if args['word']:
@@ -83,14 +83,15 @@ def translate(word, *args, **kwargs):
     response = requests.post(url, data=payload.encode('utf8'), headers=headers)
     response.encoding = 'utf-8'
     output = json.loads(response.text)
-    # print(output)
+    # #print(output)
     if output['errorCode'] == '0':
 
-        # print('\n基本释义:\n\t>>> {}:'.format(output['query']), output['translation'], "<<<")
-        return output['translation']
+        # #print('\n基本释义:\n\t>>> {}:'.format(output['query']), output['translation'], "<<<")
+        return output['translation']+output['query']
     else:
-        print('Unexpected error occured！errorCode:{}'.format(
-            output['errorCode']))
+        # print('Unexpected error occured！errorCode:{}'.format(
+        # output['errorCode']))
+        pass
 
 
 if __name__ == "__main__":

@@ -32,7 +32,7 @@ if __name__ == '__main__':
             clipper.kill()
             tray.shutdown()
             break
-        print("!!!!1")
+        # print("!!!!1")
     #     else:
     #         if clipper.is_alive != True:
     #             clipper.start()

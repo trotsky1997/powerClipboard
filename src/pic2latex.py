@@ -44,9 +44,10 @@ def gunner(pri):
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"
     }
     res = requests.post(url=url, data=json.dumps(data), headers=headers)
-    # print(res)
+    # #print(res)
     return res
 
 
 if __name__ == "__main__":
-    print(pic2latex())
+    # print(pic2latex())
+    pass

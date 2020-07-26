@@ -25,9 +25,9 @@ class Xiaoniu(object):
         url = self.url
         url += '?from={}&to={}&src_text='.format(from_lan, to_lan)
         url += urllib.parse.quote(data['src_text'])
-        # print(url)
+        # #print(url)
         result = requests.get(url=url, headers=self.headers)
-        # print(result.text)
+        # #print(result.text)
         if result != None:
             return result.json()['tgt_text']
 
@@ -38,4 +38,5 @@ def xiaoniuTrans(word, from_language='zh', to_language='en'):
 
 
 if __name__ == '__main__':
-    print(xiaoniuTrans("hello", from_language='en', to_language='zh'))
+    #print(xiaoniuTrans("hello", from_language='en', to_language='zh'))
+    pass

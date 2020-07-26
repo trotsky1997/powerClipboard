@@ -26,12 +26,14 @@ def clipper(mode, n):  # c1r
     # try:
 
     def noti(a="0", title='Now Runnng at', tail=" mode"):
-        n.send((title,
-                a+tail,))
+        def work():
+            n.send((title,
+                    a+tail,))
+        go(work)
 
     action = [pic2text, pic2latex]+[vendor2engine(i)
                                     for i in mtVendors]
-    # print(action)
+    # #print(action)
     old = pyperclip.paste()
 
     def test():
@@ -41,7 +43,7 @@ def clipper(mode, n):  # c1r
             val = pyperclip.paste()
             ans = action[2](val)
             pyperclip.copy(ans)
-            print(ans)
+            # print(ans)
             noti("Initlized Successfully!", title="Info", tail="")
             pyperclip.copy(old)
         except:
@@ -50,30 +52,49 @@ def clipper(mode, n):  # c1r
     go(test)
 
     def worker():
+
         nonlocal old
-        val = pyperclip.paste()
+        val = pyperclip.paste(re=1)
+
+        # def reg():
+        #     nonlocal val
+        #     txt = val
+        #     txt = str(txt).strip()
+        #     # 字符串按行分割
+        #     txt = txt.splitlines()
+        #     n = len(txt)
+        #     # 用空格拼接每行
+        #     txt = ' '.join(txt)
+        #     # 将所有长度大于1的空白符转为1个空格
+        #     txt = ' '.join(txt.split())
+        # reg()
         if old == val:
             return
         if mode[2] == 0:
-            if not(val != "pic" and mode[0] < 2):
+            try:
                 ans = action[mode[0]](val)
-            else:
+                if mode[0] < 2:
+                    noti("OCR Successfully!", title="Info", tail="")
+            except:
                 ans = action[2](val)
+
         elif mode[2] == 1:
-            if val == "pic":
+            try:
                 dans = action[0](val)
-            else:
+            except:
                 dans = val
             if mode[0] < 2:
                 eng = 2
             else:
                 eng = mode[0]
             ans = action[eng](dans)
-        pyperclip.copy(ans)
-        print(ans)
-        old = pyperclip.paste()
+            noti("OCR&TRanslation Successfully!", title="Info", tail="")
+        pyperclip.copy(ans, re=1)
+        # print(ans)
+        old = pyperclip.paste(re=1)
         if old == "pic":
             old = time.time()
+
     while True:
         if mode[1] == -1:
             old = pyperclip.paste()

@@ -36,5 +36,5 @@ def mt(val="", vendor="google", from_language='en', to_language='zh'):
                                   to_language=to_language)
         except:
             result = 'Failed.'
-    # print(result)
+    # #print(result)
     return result

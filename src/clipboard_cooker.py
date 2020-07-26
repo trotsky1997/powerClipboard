@@ -4,17 +4,19 @@ from win32con import *
 import win32clipboard
 from ctypes.wintypes import *
 import os
+from src.go import go
 
 
 def cook_clipboard_pic(vistor):
-    # print(pyperclip.paste())
-    # if pyperclip.paste() != "pic":
-    #     return "pic"
-    imgpath = ImageGrab()
-    with open(imgpath, "rb") as f:
-        ans = vistor(f.read())
-    os.remove(imgpath)
+    ans = 0
 
+    def work():
+        nonlocal ans
+        imgpath = ImageGrab()
+        with open(imgpath, "rb") as f:
+            ans = vistor(f.read())
+        os.remove(imgpath)
+    go(work)
     # return pyperclip.paste()
 
     return ans
@@ -57,8 +59,10 @@ def ImageGrab():
         if win32clipboard.IsClipboardFormatAvailable(win32clipboard.CF_DIB):
             data = win32clipboard.GetClipboardData(win32clipboard.CF_DIB)
         else:
-            print('clipboard does not contain an image in DIB format')
-            # win32clipboard.CloseClipboard()
+            win32clipboard.CloseClipboard()
+            # #print("!#$$$#")
+            raise('clipboard does not contain an image in DIB format')
+            #
             sys.exit(1)
             #
     finally:
@@ -71,7 +75,7 @@ def ImageGrab():
     ctypes.memmove(ctypes.pointer(bmih), data, SIZEOF_BITMAPINFOHEADER)
 
     if bmih.biCompression != BI_BITFIELDS:  # RGBA?
-        print('insupported compression type {}'.format(bmih.biCompression))
+        #print('insupported compression type {}'.format(bmih.biCompression))
         sys.exit(1)
 
     bmfh = BITMAPFILEHEADER()
@@ -88,6 +92,6 @@ def ImageGrab():
         bmp_file.write(bmfh)
         bmp_file.write(data)
 
-    print('file "{}" created from clipboard image'.format(bmp_filename))
+    #print('file "{}" created from clipboard image'.format(bmp_filename))
 
     return f'./{bmp_filename}'
