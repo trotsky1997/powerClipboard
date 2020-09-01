@@ -15,3 +15,4 @@ python app.py
 
 链接：https://pan.baidu.com/s/1YECtZnvEYWqecH-EZ6QpRA 
 提取码：yw3n
+![](https://github.com/trotsky1997/powerClipboard/blob/master/0C2B745CA371169C9A1C834CD2564008.jpg)
